@@ -27,5 +27,14 @@ public class StudentService {
         return student;
     }
 
+    // obtener el número de reservas de un estudiante
+    public int getNumberOfBookings(Long studentId) {
+        Student student = findById(studentId);
+        if (student != null) {
+            return student.getBookings().size();
+        } else {
+            throw new IllegalArgumentException("Student not found.");
+        }
+    }
 
 }

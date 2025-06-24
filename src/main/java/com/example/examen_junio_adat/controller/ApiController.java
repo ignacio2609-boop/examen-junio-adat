@@ -1,5 +1,6 @@
 package com.example.examen_junio_adat.controller;
 
+import com.example.examen_junio_adat.model.Booking;
 import com.example.examen_junio_adat.model.Student;
 import com.example.examen_junio_adat.model.Toy;
 import com.example.examen_junio_adat.service.BookingService;
@@ -51,6 +52,16 @@ public class ApiController {
         }
     }
 
+    @GetMapping("/alumnos/{id}/reservas")
+    public ResponseEntity<Integer> getNumberOfBookings(@PathVariable Long id) {
+        try {
+            int numberOfBookings = studentService.getNumberOfBookings(id);
+            return ResponseEntity.ok(numberOfBookings);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/alumnos/{id}")
     public ResponseEntity<Student> deleteStudent(Long id) {
         Student student = studentService.deleteStudent(id);
@@ -85,6 +96,12 @@ public class ApiController {
         }
     }
 
+    @GetMapping("/juguetes/disponibles")
+    public ResponseEntity<Iterable<Toy>> getAvailableToys() {
+        Iterable<Toy> availableToys = toyService.getAvailableToys();
+        return ResponseEntity.ok(availableToys);
+    }
+
     @DeleteMapping("/juguetes/{id}")
     public ResponseEntity<Toy> deleteToy(@PathVariable Long id) {
         Toy toy = toyService.deleteToy(id);
@@ -97,5 +114,27 @@ public class ApiController {
 
     //Endpoints for Booking
 
+
+    //Reservar un juguete
+    @PostMapping("/reservas")
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+        try {
+            Booking newBooking = bookingService.saveBooking(booking, toyService);
+            return ResponseEntity.ok(newBooking);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    //Devolver un juguete
+    @PutMapping("/reservas/{id}/devolver")
+    public ResponseEntity<Booking> returnToy(@PathVariable Long id) {
+        try {
+            Booking returnedBooking = bookingService.returnToy(id, toyService);
+            return ResponseEntity.ok(returnedBooking);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

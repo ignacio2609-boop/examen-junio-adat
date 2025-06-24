@@ -5,6 +5,9 @@ import com.example.examen_junio_adat.repository.ToyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ToyService {
     @Autowired
@@ -24,5 +27,12 @@ public class ToyService {
             toyRepo.delete(toy);
         }
         return toy;
+    }
+
+    // Obtener juguetes disponibles para reservar
+    public List<Toy> getAvailableToys() {
+        return toyRepo.findAll().stream()
+                .filter(Toy::isAvailable)
+                .collect(Collectors.toList());
     }
 }

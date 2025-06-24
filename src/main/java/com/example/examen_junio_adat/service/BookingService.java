@@ -23,4 +23,27 @@ public class BookingService{
             throw new IllegalArgumentException("Toy is already reserved or does not exist.");
         }
     }
+
+    // Devolver un juguete y marcarlo como disponible
+
+    public Booking findById(Long id) {
+        return bookingRepo.findById(id).orElse(null);
+    }
+
+    public Booking returnToy(Long id, ToyService toyService) {
+        Booking booking = findById(id);
+        if (booking != null) {
+            Toy toy = toyService.findById(booking.getId());
+            if (toy != null) {
+                toy.setAvailable(true);
+                toyService.saveOrUpdateToy(toy);
+                bookingRepo.delete(booking);
+                return booking;
+            } else {
+                throw new IllegalArgumentException("Toy not found.");
+            }
+        } else {
+            throw new IllegalArgumentException("Booking not found.");
+        }
+    }
 }

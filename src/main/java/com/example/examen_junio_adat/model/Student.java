@@ -2,6 +2,7 @@ package com.example.examen_junio_adat.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -18,4 +19,8 @@ public class Student {
     private String surname;
     private String irbj_grade; //curso
     private String irbj_email; //email
+
+    @OneToMany(mappedBy = "studentId")
+    private Collection<Booking> bookings;
+
 }
