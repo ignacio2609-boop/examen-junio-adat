@@ -14,4 +14,8 @@ public class Toy {
     private String name;
     private Boolean available = true;
     private String bonilla_description; // descripción del juguete
+
+    public boolean isAvailable() {
+        return available;
+    }
 }

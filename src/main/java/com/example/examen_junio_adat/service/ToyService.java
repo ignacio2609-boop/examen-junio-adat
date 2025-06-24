@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ToyService {
     @Autowired
-    private ToyRepo toyRepo;
+    public ToyRepo toyRepo;
 
     public Toy saveOrUpdateToy(Toy toy) {
         return toyRepo.save(toy);
